@@ -75,5 +75,7 @@ export function tokenize(sourceCode: string): Token[] {
 
   return tokens;
 }
-const code = fs.readFileSync("./test.txt");
-console.log(code);
+const code = fs.readFileSync("./test.txt", "utf8");
+for (const token of tokenize(code)) {
+  console.log(token);
+}
