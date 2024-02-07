@@ -7,7 +7,7 @@ function repl() {
 
   while (true) {
     const input = readlineSync.question("> ");
-    if (!input || input.toLowerCase() === "exit") {
+    if (!input || input.toLowerCase() == "exit") {
       break;
     }
 
