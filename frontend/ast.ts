@@ -1,6 +1,6 @@
 export type NodeType =
   | "Program"
-  | "NumbericLiteral"
+  | "NumericLitral"
   | "Identifier"
   | "BinaryExpr"
   | "CallExpr"
@@ -25,7 +25,7 @@ export interface Identifier extends Expr {
   kind: "Identifier";
   symbol: string;
 }
-export interface NumbericLiteral extends Expr {
-  kind: "NumbericLiteral";
+export interface NumericLitral extends Expr {
+  kind: "NumericLitral";
   value: number;
 }

@@ -11,6 +11,7 @@ export enum TokenType {
   OpenParen,
   CloseParen,
   BinaryOperator,
+  EOF,
 }
 const Keywords: Record<string, TokenType> = {
   let: TokenType.Let,
@@ -72,10 +73,7 @@ export function tokenize(sourceCode: string): Token[] {
       }
     }
   }
-
+  tokens.push({ type: TokenType.EOF, value: "EOF" });
+  console.log("RETURNING TOKEN");
   return tokens;
-}
-const code = fs.readFileSync("./test.txt", "utf8");
-for (const token of tokenize(code)) {
-  console.log(token);
 }
