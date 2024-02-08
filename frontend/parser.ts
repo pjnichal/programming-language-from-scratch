@@ -27,7 +27,21 @@ export default class Parser {
     return this.parse_expr();
   }
   private parse_expr(): Expr {
-    return this.parse_primary_expr();
+    return this.parse_additive_expr();
+  }
+  parse_additive_expr(): Expr {
+    let left = this.parse_primary_expr();
+    while (this.at().value == "+" || this.at().value == "-") {
+      const operator = this.eat().value;
+      const right = this.parse_primary_expr();
+      left = {
+        kind: "BinaryExpr",
+        left,
+        right,
+        operator,
+      } as BinaryExpr;
+    }
+    return left;
   }
   private parse_primary_expr(): Expr {
     const token = this.at().type;
@@ -41,7 +55,7 @@ export default class Parser {
           value: parseFloat(this.eat().value),
         } as NumericLitral;
       default:
-        console.error("UNHANDLE BLA BLA");
+        console.error("UNHANDLE BLA BLA", this.at());
         process.exit();
     }
   }

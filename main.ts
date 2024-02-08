@@ -13,7 +13,7 @@ function repl() {
 
     const program = parser.produceAST(input);
 
-    console.log(program);
+    console.log(JSON.stringify(program, null, 1));
 
     // Use the input here
   }
