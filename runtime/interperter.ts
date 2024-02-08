@@ -7,7 +7,37 @@ import {
   Program,
   Stmt,
 } from "../frontend/ast";
-function evaluate_binary_expr(binop: BinaryExpr): RuntimeVal {}
+function evaluate_binary_expr(binop: BinaryExpr): RuntimeVal {
+  const lhs = evaluate(binop.left);
+  const rhs = evaluate(binop.right);
+  if (lhs.type == "number" && rhs.type == "number") {
+    return evaluate_numeric_binary_expr(
+      lhs as NumberVal,
+      rhs as NumberVal,
+      binop.operator
+    );
+  }
+  return { type: "null", value: "null" } as NullVal;
+}
+function evaluate_numeric_binary_expr(
+  lhs: NumberVal,
+  rhs: NumberVal,
+  operator: string
+): NumberVal {
+  let result: number = 0;
+  if (operator == "+") {
+    result = lhs.value + rhs.value;
+  } else if (operator == "-") {
+    result = lhs.value - rhs.value;
+  } else if (operator == "*") {
+    result = lhs.value * rhs.value;
+  } else if (operator == "/") {
+    result = lhs.value / rhs.value;
+  } else if (operator == "%") {
+    result = lhs.value % rhs.value;
+  }
+  return { type: "number", value: result } as NumberVal;
+}
 function evaluate_program(program: Program): RuntimeVal {
   let lastEvalued: RuntimeVal = { type: "null", value: "null" } as NullVal;
   for (const statms of program.body) {

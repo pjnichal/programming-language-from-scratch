@@ -64,9 +64,9 @@ export function tokenize(sourceCode: string): Token[] {
         }
         const resevered = Keywords[ident];
         if (typeof resevered == "number") {
-          tokens.push(token(ident, TokenType.Identifier));
-        } else {
           tokens.push(token(ident, resevered));
+        } else {
+          tokens.push(token(ident, TokenType.Identifier));
         }
       } else if (isskipable(src[0])) {
         src.shift();

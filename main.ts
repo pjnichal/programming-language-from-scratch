@@ -14,7 +14,7 @@ function repl() {
 
     const program = parser.produceAST(input);
     const result = evaluate(program);
-    console.log(JSON.stringify(program, null, 1));
+    console.log(result);
 
     // Use the input here
   }
