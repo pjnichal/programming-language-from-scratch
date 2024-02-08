@@ -12,9 +12,11 @@ export enum TokenType {
   CloseParen,
   BinaryOperator,
   EOF,
+  Null,
 }
 const Keywords: Record<string, TokenType> = {
   let: TokenType.Let,
+  null: TokenType.Null,
 };
 function token(value = "", type: TokenType): Token {
   return { value, type };
@@ -61,7 +63,7 @@ export function tokenize(sourceCode: string): Token[] {
           ident += src.shift();
         }
         const resevered = Keywords[ident];
-        if (resevered == undefined) {
+        if (typeof resevered == "number") {
           tokens.push(token(ident, TokenType.Identifier));
         } else {
           tokens.push(token(ident, resevered));

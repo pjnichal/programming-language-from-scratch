@@ -72,10 +72,23 @@ export default class Parser {
           kind: "NumericLitral",
           value: parseFloat(this.eat().value),
         } as NumericLitral;
+      case TokenType.OpenParen:
+        this.eat();
+        const value = this.parse_expr();
+        this.expect(TokenType.CloseParen, "No closing parenthesis");
+        return value;
       default:
         console.error("UNHANDLE BLA BLA", this.at());
         process.exit();
     }
+  }
+  private expect(type: TokenType, error: any) {
+    const prev = this.tokens.shift() as Token;
+    if (!prev || prev.type != type) {
+      console.log("Parser err", error, prev, "Expectiong ", type);
+      process.exit();
+    }
+    return prev;
   }
   private eat(): Token {
     return this.tokens.shift() as Token;
