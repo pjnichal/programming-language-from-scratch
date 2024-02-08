@@ -29,9 +29,27 @@ export default class Parser {
   private parse_expr(): Expr {
     return this.parse_additive_expr();
   }
-  parse_additive_expr(): Expr {
-    let left = this.parse_primary_expr();
+  private parse_additive_expr(): Expr {
+    let left = this.parse_multiplicative_expr();
     while (this.at().value == "+" || this.at().value == "-") {
+      const operator = this.eat().value;
+      const right = this.parse_multiplicative_expr();
+      left = {
+        kind: "BinaryExpr",
+        left,
+        right,
+        operator,
+      } as BinaryExpr;
+    }
+    return left;
+  }
+  private parse_multiplicative_expr(): Expr {
+    let left = this.parse_primary_expr();
+    while (
+      this.at().value == "*" ||
+      this.at().value == "/" ||
+      this.at().value == "%"
+    ) {
       const operator = this.eat().value;
       const right = this.parse_primary_expr();
       left = {
