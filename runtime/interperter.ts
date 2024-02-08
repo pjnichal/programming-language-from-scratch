@@ -1,15 +1,17 @@
 import { ValueType, RuntimeVal, NumberVal, NullVal } from "./values";
 import {
   BinaryExpr,
+  Identifier,
   NodeType,
   NullLiteral,
   NumericLitral,
   Program,
   Stmt,
 } from "../frontend/ast";
-function evaluate_binary_expr(binop: BinaryExpr): RuntimeVal {
-  const lhs = evaluate(binop.left);
-  const rhs = evaluate(binop.right);
+import Environment from "./environment";
+function evaluate_binary_expr(binop: BinaryExpr, env: Environment): RuntimeVal {
+  const lhs = evaluate(binop.left, env);
+  const rhs = evaluate(binop.right, env);
   if (lhs.type == "number" && rhs.type == "number") {
     return evaluate_numeric_binary_expr(
       lhs as NumberVal,
@@ -38,28 +40,34 @@ function evaluate_numeric_binary_expr(
   }
   return { type: "number", value: result } as NumberVal;
 }
-function evaluate_program(program: Program): RuntimeVal {
+function evaluate_program(program: Program, env: Environment): RuntimeVal {
   let lastEvalued: RuntimeVal = { type: "null", value: "null" } as NullVal;
   for (const statms of program.body) {
-    lastEvalued = evaluate(statms);
+    lastEvalued = evaluate(statms, env);
   }
   return lastEvalued;
 }
-export function evaluate(astNode: Stmt): RuntimeVal {
+export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
   switch (astNode.kind) {
     case "NumericLitral":
       return {
         value: (astNode as NumericLitral).value,
         type: "number",
       } as NumberVal;
+    case "Identifier":
+      return evaluate_ident(astNode as Identifier, env);
     case "NullLiteral":
       return { value: "null", type: "null" } as NullVal;
     case "BinaryExpr":
-      return evaluate_binary_expr(astNode as BinaryExpr);
+      return evaluate_binary_expr(astNode as BinaryExpr, env);
     case "Program":
-      return evaluate_program(astNode as Program);
+      return evaluate_program(astNode as Program, env);
     default:
       console.log("THIS AST NODE HAS NOT SETUP", astNode);
       process.exit();
   }
+}
+function evaluate_ident(ident: Identifier, env: Environment): RuntimeVal {
+  const val = env.looupVar(ident.symbol);
+  return val;
 }
