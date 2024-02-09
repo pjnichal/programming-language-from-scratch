@@ -53,6 +53,7 @@ export default class Parser {
     }
     this.expect(TokenType.Equals, "Expected equal fot const");
     const declare = {
+      ident,
       kind: "VarDeclare",
       value: this.parse_expr(),
       constant: isConst,

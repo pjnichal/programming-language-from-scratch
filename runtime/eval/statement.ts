@@ -17,5 +17,7 @@ export function evaluate_var_declaration(
   varDeclare: VarDeclare,
   env: Environment
 ): RuntimeVal {
-  throw new Error("Function not implemented.");
+  const value = varDeclare.value ? evaluate(varDeclare.value, env) : MK_NULL();
+
+  return env.declareVar(varDeclare.ident, value, varDeclare.constant);
 }
