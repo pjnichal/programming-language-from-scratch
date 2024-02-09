@@ -2,12 +2,15 @@ import Parser from "./frontend/parser";
 import Environment from "./runtime/environment";
 const readlineSync = require("readline-sync");
 import { evaluate } from "./runtime/interperter";
-import { NumberVal } from "./runtime/values";
+import { MK_NULL, MK_NUM, MK_BOOL } from "./runtime/values";
 repl();
 function repl() {
   const parser = new Parser();
   const env = new Environment();
-  env.declareVar("x", { value: 100, type: "number" } as NumberVal);
+  env.declareVar("x", MK_NUM(100));
+  env.declareVar("true", MK_BOOL(true));
+  env.declareVar("false", MK_BOOL(false));
+  env.declareVar("null", MK_NULL());
   console.log("Repl v0.0");
 
   while (true) {

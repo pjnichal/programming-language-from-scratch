@@ -1,4 +1,4 @@
-import { ValueType, RuntimeVal, NumberVal, NullVal } from "./values";
+import { ValueType, RuntimeVal, NumberVal, NullVal, MK_NULL } from "./values";
 import {
   BinaryExpr,
   Identifier,
@@ -19,7 +19,7 @@ function evaluate_binary_expr(binop: BinaryExpr, env: Environment): RuntimeVal {
       binop.operator
     );
   }
-  return { type: "null", value: "null" } as NullVal;
+  return MK_NULL();
 }
 function evaluate_numeric_binary_expr(
   lhs: NumberVal,
@@ -41,7 +41,7 @@ function evaluate_numeric_binary_expr(
   return { type: "number", value: result } as NumberVal;
 }
 function evaluate_program(program: Program, env: Environment): RuntimeVal {
-  let lastEvalued: RuntimeVal = { type: "null", value: "null" } as NullVal;
+  let lastEvalued: RuntimeVal = MK_NULL();
   for (const statms of program.body) {
     lastEvalued = evaluate(statms, env);
   }
@@ -57,7 +57,7 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
     case "Identifier":
       return evaluate_ident(astNode as Identifier, env);
     case "NullLiteral":
-      return { value: "null", type: "null" } as NullVal;
+      return MK_NULL();
     case "BinaryExpr":
       return evaluate_binary_expr(astNode as BinaryExpr, env);
     case "Program":
