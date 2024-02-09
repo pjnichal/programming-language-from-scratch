@@ -12,11 +12,9 @@ export enum TokenType {
   CloseParen,
   BinaryOperator,
   EOF,
-  Null,
 }
 const Keywords: Record<string, TokenType> = {
   let: TokenType.Let,
-  null: TokenType.Null,
 };
 function token(value = "", type: TokenType): Token {
   return { value, type };

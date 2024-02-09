@@ -2,8 +2,7 @@ import { ValueType, RuntimeVal, NumberVal, NullVal, MK_NULL } from "./values";
 import {
   BinaryExpr,
   Identifier,
-  NodeType,
-  NullLiteral,
+
   NumericLitral,
   Program,
   Stmt,
@@ -56,8 +55,6 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
       } as NumberVal;
     case "Identifier":
       return evaluate_ident(astNode as Identifier, env);
-    case "NullLiteral":
-      return MK_NULL();
     case "BinaryExpr":
       return evaluate_binary_expr(astNode as BinaryExpr, env);
     case "Program":

@@ -5,7 +5,7 @@ export type NodeType =
   | "BinaryExpr"
   | "CallExpr"
   | "UnaryExp"
-  | "NullLiteral"
+
   | "FunctionDeclaration";
 
 export interface Stmt {
@@ -29,8 +29,4 @@ export interface Identifier extends Expr {
 export interface NumericLitral extends Expr {
   kind: "NumericLitral";
   value: number;
-}
-export interface NullLiteral extends Expr {
-  kind: "NullLiteral";
-  value: "null";
 }
