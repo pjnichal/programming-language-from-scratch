@@ -5,7 +5,7 @@ import {
   BinaryExpr,
   NumericLitral,
   Identifier,
-  NullLiteral,
+  VarDeclare,
 } from "./ast";
 import { tokenize, TokenType, Token } from "./lexer";
 export default class Parser {
@@ -25,7 +25,41 @@ export default class Parser {
     return this.tokens[0].type != TokenType.EOF;
   }
   private parse_stmt(): Stmt {
-    return this.parse_expr();
+    switch (this.at().type) {
+      case TokenType.Let:
+      case TokenType.Const:
+        return this.parse_var_declare();
+      default:
+        return this.parse_expr();
+    }
+  }
+  parse_var_declare(): Stmt {
+    const isConst = this.eat().type == TokenType.Const;
+    const ident = this.expect(
+      TokenType.Identifier,
+      "Expected varible name"
+    ).value;
+    if (this.at().type == TokenType.Semicolon) {
+      this.eat();
+      if (isConst) {
+        throw "Must assign value to const";
+      }
+      return {
+        kind: "VarDeclare",
+        ident,
+        constant: false,
+        value: undefined,
+      } as VarDeclare;
+    }
+    this.expect(TokenType.Equals, "Expected equal fot const");
+    const declare = {
+      ident,
+      kind: "VarDeclare",
+      value: this.parse_expr(),
+      constant: isConst,
+    } as VarDeclare;
+    this.expect(TokenType.Semicolon, "Variable declare must end with semicol");
+    return declare;
   }
   private parse_expr(): Expr {
     return this.parse_additive_expr();
@@ -73,9 +107,7 @@ export default class Parser {
           kind: "NumericLitral",
           value: parseFloat(this.eat().value),
         } as NumericLitral;
-      case TokenType.Null:
-        this.eat();
-        return { kind: "NullLiteral", value: "null" } as NullLiteral;
+
       case TokenType.OpenParen:
         this.eat();
         const value = this.parse_expr();
