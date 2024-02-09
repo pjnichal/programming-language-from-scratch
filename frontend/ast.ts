@@ -1,11 +1,11 @@
 export type NodeType =
   | "Program"
+  | "VarDeclare"
   | "NumericLitral"
   | "Identifier"
   | "BinaryExpr"
   | "CallExpr"
   | "UnaryExp"
-
   | "FunctionDeclaration";
 
 export interface Stmt {
@@ -14,6 +14,12 @@ export interface Stmt {
 export interface Program extends Stmt {
   kind: "Program";
   body: Stmt[];
+}
+export interface VarDeclare extends Stmt {
+  kind: "VarDeclare";
+  constant: boolean;
+  ident: string;
+  value?: Expr;
 }
 export interface Expr extends Stmt {}
 export interface BinaryExpr extends Expr {
