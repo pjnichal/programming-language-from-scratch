@@ -1,5 +1,6 @@
 import { ValueType, RuntimeVal, NumberVal, NullVal, MK_NULL } from "./values";
 import {
+  AssignmentExpr,
   BinaryExpr,
   Identifier,
   NumericLitral,
@@ -9,7 +10,11 @@ import {
 } from "../frontend/ast";
 import Environment from "./environment";
 import { evaluate_program, evaluate_var_declaration } from "./eval/statement";
-import { evaluate_binary_expr, evaluate_ident } from "./eval/expression";
+import {
+  evaluate_assigment,
+  evaluate_binary_expr,
+  evaluate_ident,
+} from "./eval/expression";
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
   switch (astNode.kind) {
@@ -20,6 +25,8 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
       } as NumberVal;
     case "Identifier":
       return evaluate_ident(astNode as Identifier, env);
+    case "AssignmentExpr":
+      return evaluate_assigment(astNode as AssignmentExpr, env);
     case "BinaryExpr":
       return evaluate_binary_expr(astNode as BinaryExpr, env);
     case "VarDeclare":
