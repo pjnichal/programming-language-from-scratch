@@ -17,6 +17,7 @@ export enum TokenType {
   Colon,
   OpenBrace,
   CloseBrace,
+  Dot,
   EOF,
   OpenBracket,
   CloseBracket,
@@ -59,6 +60,8 @@ export function tokenize(sourceCode: string): Token[] {
       tokens.push(token(src.shift(), TokenType.Colon));
     } else if (src[0] == ",") {
       tokens.push(token(src.shift(), TokenType.Comma));
+    } else if (src[0] == ".") {
+      tokens.push(token(src.shift(), TokenType.Dot));
     } else if (
       src[0] == "+" ||
       src[0] == "-" ||

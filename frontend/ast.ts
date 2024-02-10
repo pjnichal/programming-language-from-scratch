@@ -39,16 +39,16 @@ export interface BinaryExpr extends Expr {
   operator: string;
 }
 export interface CallExpr extends Expr {
-  kind: "BinaryExpr";
+  kind: "CallExpr";
   arguments: Expr[];
   caller: Expr;
   operator: string;
 }
 export interface MemberExpr extends Expr {
-  kind: "BinaryExpr";
+  kind: "MemberExpr";
   object: Expr;
   property: Expr;
-  computer: boolean;
+  computed: boolean;
 }
 export interface Identifier extends Expr {
   kind: "Identifier";
