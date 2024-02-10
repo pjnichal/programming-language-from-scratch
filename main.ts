@@ -1,5 +1,5 @@
 import Parser from "./frontend/parser";
-import Environment from "./runtime/environment";
+import Environment, { createGlobalEnv } from "./runtime/environment";
 import fs from "fs";
 const readlineSync = require("readline-sync");
 import { evaluate } from "./runtime/interperter";
@@ -7,7 +7,7 @@ import { MK_NULL, MK_NUM, MK_BOOL } from "./runtime/values";
 run("./test.txt");
 function run(filename: string) {
   const parser = new Parser();
-  const env = new Environment();
+  const env = createGlobalEnv();
 
   const input = fs.readFileSync(filename, "utf-8");
   const program = parser.produceAST(input);

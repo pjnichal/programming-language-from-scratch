@@ -4,6 +4,7 @@ import {
   BinaryExpr,
   Identifier,
   NumericLitral,
+  ObjectLiteral,
   Program,
   Stmt,
   VarDeclare,
@@ -14,6 +15,7 @@ import {
   evaluate_assigment,
   evaluate_binary_expr,
   evaluate_ident,
+  evaluate_object_expr,
 } from "./eval/expression";
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
@@ -25,6 +27,8 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
       } as NumberVal;
     case "Identifier":
       return evaluate_ident(astNode as Identifier, env);
+    case "ObjectLiteral":
+      return evaluate_object_expr(astNode as ObjectLiteral, env);
     case "AssignmentExpr":
       return evaluate_assigment(astNode as AssignmentExpr, env);
     case "BinaryExpr":

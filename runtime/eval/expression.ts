@@ -1,7 +1,12 @@
-import { AssignmentExpr, BinaryExpr, Identifier } from "../../frontend/ast";
+import {
+  AssignmentExpr,
+  BinaryExpr,
+  Identifier,
+  ObjectLiteral,
+} from "../../frontend/ast";
 import Environment from "../environment";
 import { evaluate } from "../interperter";
-import { MK_NULL, NumberVal, RuntimeVal } from "../values";
+import { MK_NULL, NumberVal, ObjectVal, RuntimeVal } from "../values";
 
 export function evaluate_binary_expr(
   binop: BinaryExpr,
@@ -53,4 +58,16 @@ export function evaluate_assigment(
   }
   const varname = (node.assigne as Identifier).symbol;
   return env.assignVar(varname, evaluate(node.value, env));
+}
+export function evaluate_object_expr(
+  obj: ObjectLiteral,
+  env: Environment
+): RuntimeVal {
+  const object = { type: "object", properties: new Map() } as ObjectVal;
+  for (const { key, value } of obj.properties) {
+    const runtimeVal =
+      value == undefined ? env.looupVar(key) : evaluate(value, env);
+    object.properties.set(key, runtimeVal);
+  }
+  return object;
 }

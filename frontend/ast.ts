@@ -8,6 +8,8 @@ export type NodeType =
   | "Property"
   | "ObjectLiteral"
   | "UnaryExpr"
+  | "MemberExpr"
+  | "CallExpr"
   | "AssignmentExpr"
   | "FunctionDeclaration";
 
@@ -35,6 +37,18 @@ export interface BinaryExpr extends Expr {
   left: Expr;
   right: Expr;
   operator: string;
+}
+export interface CallExpr extends Expr {
+  kind: "BinaryExpr";
+  arguments: Expr[];
+  caller: Expr;
+  operator: string;
+}
+export interface MemberExpr extends Expr {
+  kind: "BinaryExpr";
+  object: Expr;
+  property: Expr;
+  computer: boolean;
 }
 export interface Identifier extends Expr {
   kind: "Identifier";

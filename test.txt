@@ -1,1 +1,2 @@
-let x = {name :10,now :{age:100}};
+const age = 10;
+let x = {name :10,age,complex:{}};
