@@ -5,6 +5,8 @@ export type NodeType =
   | "Identifier"
   | "BinaryExpr"
   | "CallExpr"
+  | "Property"
+  | "ObjectLiteral"
   | "UnaryExpr"
   | "AssignmentExpr"
   | "FunctionDeclaration";
@@ -41,4 +43,14 @@ export interface Identifier extends Expr {
 export interface NumericLitral extends Expr {
   kind: "NumericLitral";
   value: number;
+}
+export interface ObjectLiteral extends Expr {
+  kind: "ObjectLiteral";
+  properties: Property[];
+}
+
+export interface Property extends Expr {
+  kind: "Property";
+  key: string;
+  value?: Expr;
 }

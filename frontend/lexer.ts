@@ -35,7 +35,7 @@ function isint(str: string) {
   return c >= bound[0] && c <= bound[1];
 }
 function isskipable(str: string) {
-  return str == " " || str == "\n" || str == "\t";
+  return str == " " || str == "\n" || str == "\t" || str == "\r";
 }
 export function tokenize(sourceCode: string): Token[] {
   const tokens = new Array<Token>();

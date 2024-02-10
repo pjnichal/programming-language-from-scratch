@@ -1,2 +1,1 @@
-let x = 45 * (4/3);
-x
+let x = {name :10,now :{age:100}};
