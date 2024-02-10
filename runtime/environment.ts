@@ -1,14 +1,23 @@
-import { RuntimeVal } from "./values";
-
+import { MK_BOOL, MK_NULL, RuntimeVal } from "./values";
+function setupScope(env: Environment) {
+  env.declareVar("true", MK_BOOL(true), true);
+  env.declareVar("false", MK_BOOL(false), true);
+  env.declareVar("null", MK_NULL(), true);
+}
 export default class Environment {
   private parent?: Environment;
   private variables: Map<string, RuntimeVal>;
   private constants: Set<string>;
   constructor(parentENV?: Environment) {
+    const global = parentENV ? true : false;
+    if (global) {
+      setupScope(this);
+    }
     this.parent = parentENV;
     this.variables = new Map();
     this.constants = new Set();
   }
+
   public declareVar(
     varname: string,
     value: RuntimeVal,
