@@ -1,3 +1,4 @@
 const age = 10;
 let x = {name :10,age,complex:{age}};
-x(10)
+print(age,45)
+print(time())

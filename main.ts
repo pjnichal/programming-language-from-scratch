@@ -11,8 +11,7 @@ function run(filename: string) {
 
   const input = fs.readFileSync(filename, "utf-8");
   const program = parser.produceAST(input);
-  const result = evaluate(program, env);
-  console.log(result);
+  evaluate(program, env);
 }
 function repl() {
   const parser = new Parser();
@@ -27,8 +26,7 @@ function repl() {
     }
 
     const program = parser.produceAST(input);
-    const result = evaluate(program, env);
-    console.log(result);
+    evaluate(program, env);
 
     // Use the input here
   }

@@ -2,6 +2,7 @@ import { ValueType, RuntimeVal, NumberVal, NullVal, MK_NULL } from "./values";
 import {
   AssignmentExpr,
   BinaryExpr,
+  CallExpr,
   Identifier,
   NumericLitral,
   ObjectLiteral,
@@ -16,6 +17,7 @@ import {
   evaluate_binary_expr,
   evaluate_ident,
   evaluate_object_expr,
+  evalue_call_expr,
 } from "./eval/expression";
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
@@ -29,12 +31,15 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
       return evaluate_ident(astNode as Identifier, env);
     case "ObjectLiteral":
       return evaluate_object_expr(astNode as ObjectLiteral, env);
+    case "CallExpr":
+      return evalue_call_expr(astNode as CallExpr, env);
     case "AssignmentExpr":
       return evaluate_assigment(astNode as AssignmentExpr, env);
     case "BinaryExpr":
       return evaluate_binary_expr(astNode as BinaryExpr, env);
     case "VarDeclare":
       return evaluate_var_declaration(astNode as VarDeclare, env);
+
     case "Program":
       return evaluate_program(astNode as Program, env);
     default:
