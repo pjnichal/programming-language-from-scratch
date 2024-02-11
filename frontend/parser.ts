@@ -11,6 +11,7 @@ import {
   ObjectLiteral,
   CallExpr,
   MemberExpr,
+  FunctionDeclare,
 } from "./ast";
 import { tokenize, TokenType, Token } from "./lexer";
 export default class Parser {
@@ -34,9 +35,49 @@ export default class Parser {
       case TokenType.Let:
       case TokenType.Const:
         return this.parse_var_declare();
+      case TokenType.Fn:
+        return this.parse_fn_declare();
       default:
         return this.parse_expr();
     }
+  }
+  parse_fn_declare(): Stmt {
+    this.eat();
+    const name = this.expect(
+      TokenType.Identifier,
+      "Expecred function name following fn keyword"
+    ).value;
+    const args = this.parse_args();
+    const params: string[] = [];
+    for (const arg of args) {
+      if (arg.kind !== "Identifier") {
+        console.log(arg);
+        throw "Inside function declare expected paramters to be of type string";
+      }
+      params.push((arg as Identifier).symbol);
+    }
+    this.expect(
+      TokenType.OpenBrace,
+      "Expected function body following declaration"
+    );
+    const body: Stmt[] = [];
+    while (
+      this.at().type !== TokenType.EOF &&
+      this.at().type !== TokenType.CloseBrace
+    ) {
+      body.push(this.parse_stmt());
+    }
+    this.expect(
+      TokenType.CloseBrace,
+      "Closing brace expectd inside function declaratio"
+    );
+    const fn = {
+      body,
+      kind: "FunctionDeclare",
+      name,
+      parameter: params,
+    } as FunctionDeclare;
+    return fn;
   }
   parse_var_declare(): Stmt {
     const isConst = this.eat().type == TokenType.Const;

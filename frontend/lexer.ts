@@ -19,12 +19,14 @@ export enum TokenType {
   CloseBrace,
   Dot,
   EOF,
+  Fn,
   OpenBracket,
   CloseBracket,
 }
 const Keywords: Record<string, TokenType> = {
   let: TokenType.Let,
   const: TokenType.Const,
+  fn: TokenType.Fn,
 };
 function token(value = "", type: TokenType): Token {
   return { value, type };

@@ -3,6 +3,7 @@ import {
   AssignmentExpr,
   BinaryExpr,
   CallExpr,
+  FunctionDeclare,
   Identifier,
   NumericLitral,
   ObjectLiteral,
@@ -11,7 +12,11 @@ import {
   VarDeclare,
 } from "../frontend/ast";
 import Environment from "./environment";
-import { evaluate_program, evaluate_var_declaration } from "./eval/statement";
+import {
+  evaluate_fn_declaration,
+  evaluate_program,
+  evaluate_var_declaration,
+} from "./eval/statement";
 import {
   evaluate_assigment,
   evaluate_binary_expr,
@@ -39,7 +44,8 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
       return evaluate_binary_expr(astNode as BinaryExpr, env);
     case "VarDeclare":
       return evaluate_var_declaration(astNode as VarDeclare, env);
-
+    case "FunctionDeclare":
+      return evaluate_fn_declaration(astNode as FunctionDeclare, env);
     case "Program":
       return evaluate_program(astNode as Program, env);
     default:

@@ -2,6 +2,7 @@ export type NodeType =
   | "Program"
   | "VarDeclare"
   | "NumericLitral"
+  | "FunctionDeclare"
   | "Identifier"
   | "BinaryExpr"
   | "CallExpr"
@@ -10,8 +11,7 @@ export type NodeType =
   | "UnaryExpr"
   | "MemberExpr"
   | "CallExpr"
-  | "AssignmentExpr"
-  | "FunctionDeclaration";
+  | "AssignmentExpr";
 
 export interface Stmt {
   kind: NodeType;
@@ -30,6 +30,12 @@ export interface VarDeclare extends Stmt {
   constant: boolean;
   ident: string;
   value?: Expr;
+}
+export interface FunctionDeclare extends Stmt {
+  kind: "FunctionDeclare";
+  parameter: string[];
+  name: string;
+  body: Stmt[];
 }
 export interface Expr extends Stmt {}
 export interface BinaryExpr extends Expr {

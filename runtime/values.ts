@@ -1,5 +1,12 @@
+import { Stmt } from "../frontend/ast";
 import Envirement from "./environment";
-export type ValueType = "null" | "number" | "boolean" | "object" | "native-fn";
+export type ValueType =
+  | "null"
+  | "number"
+  | "boolean"
+  | "object"
+  | "native-fn"
+  | "function";
 export interface RuntimeVal {
   type: ValueType;
 }
@@ -22,6 +29,14 @@ export interface BoolVal extends RuntimeVal {
 export interface NativeFnValue extends RuntimeVal {
   type: "native-fn";
   call: FunctionCall;
+}
+
+export interface FnValue extends RuntimeVal {
+  type: "function";
+  name: string;
+  parameters: string[];
+  declareEnv: Envirement;
+  body: Stmt[];
 }
 export type FunctionCall = (args: RuntimeVal[], env: Envirement) => RuntimeVal;
 export function MK_NULL() {
