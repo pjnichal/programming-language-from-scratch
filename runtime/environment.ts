@@ -1,4 +1,11 @@
-import { MK_BOOL, MK_NATIVEFN, MK_NULL, MK_NUM, RuntimeVal } from "./values";
+import {
+  MK_BOOL,
+  MK_NATIVEFN,
+  MK_NULL,
+  MK_NUM,
+  RuntimeVal,
+  NumberVal,
+} from "./values";
 export function createGlobalEnv() {
   const env = new Environment();
   env.declareVar("true", MK_BOOL(true), true);
@@ -7,7 +14,12 @@ export function createGlobalEnv() {
   env.declareVar(
     "print",
     MK_NATIVEFN((args, env) => {
-      console.log(...args);
+      args.forEach((val) => {
+        if (val.type == "number") {
+          const value = (val as NumberVal).value;
+          console.log(value);
+        }
+      });
       return MK_NULL();
     }),
     true

@@ -8,5 +8,5 @@ add
 }
 
 const adder =makeAdder(1);
-print(adder)
+
 print(adder(10,5))
