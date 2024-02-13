@@ -8,5 +8,5 @@ add
 }
 
 const adder =makeAdder(1);
-
-print(adder(10,5))
+const obj = {age:10};
+print(obj)

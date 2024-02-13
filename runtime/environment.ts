@@ -5,6 +5,8 @@ import {
   MK_NUM,
   RuntimeVal,
   NumberVal,
+  BoolVal,
+  ObjectVal,
 } from "./values";
 export function createGlobalEnv() {
   const env = new Environment();
@@ -15,9 +17,17 @@ export function createGlobalEnv() {
     "print",
     MK_NATIVEFN((args, env) => {
       args.forEach((val) => {
-        if (val.type == "number") {
-          const value = (val as NumberVal).value;
-          console.log(value);
+        switch (val.type) {
+          case "number":
+            console.log((val as NumberVal).value);
+          case "boolean":
+            console.log((val as BoolVal).value);
+          case "object":
+            let obj: { [key: string]: any } = {};
+            const aObj = val as ObjectVal;
+            aObj.properties.forEach((value, key) => {});
+
+            return obj;
         }
       });
       return MK_NULL();
