@@ -1,2 +1,1 @@
-const obj =10;
-print(obj)
+10==10

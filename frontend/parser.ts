@@ -19,6 +19,7 @@ export default class Parser {
 
   public produceAST(sourceCode: string): Program {
     this.tokens = tokenize(sourceCode);
+    console.log(this.tokens);
     const program: Program = { kind: "Program", body: [] };
 
     while (this.not_eof()) {
