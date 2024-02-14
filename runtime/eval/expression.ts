@@ -9,7 +9,9 @@ import Environment from "../environment";
 import { evaluate } from "../interperter";
 import {
   FnValue,
+  MK_BOOL,
   MK_NULL,
+  MK_NUM,
   NativeFnValue,
   NumberVal,
   ObjectVal,
@@ -35,20 +37,26 @@ function evaluate_numeric_binary_expr(
   lhs: NumberVal,
   rhs: NumberVal,
   operator: string
-): NumberVal {
-  let result: number = 0;
-  if (operator == "+") {
-    result = lhs.value + rhs.value;
-  } else if (operator == "-") {
-    result = lhs.value - rhs.value;
-  } else if (operator == "*") {
-    result = lhs.value * rhs.value;
-  } else if (operator == "/") {
-    result = lhs.value / rhs.value;
-  } else if (operator == "%") {
-    result = lhs.value % rhs.value;
+): RuntimeVal {
+  let result: RuntimeVal = MK_NULL();
+  if (operator == "==") {
+    return MK_BOOL(lhs.value == rhs.value);
   }
-  return { type: "number", value: result } as NumberVal;
+  if (lhs.type == "number" && rhs.type == "number") {
+    if (operator == "+") {
+      result = MK_NUM(lhs.value + rhs.value);
+    } else if (operator == "-") {
+      result = MK_NUM(lhs.value - rhs.value);
+    } else if (operator == "*") {
+      result = MK_NUM(lhs.value * rhs.value);
+    } else if (operator == "/") {
+      result = MK_NUM(lhs.value / rhs.value);
+    } else if (operator == "%") {
+      result = MK_NUM(lhs.value % rhs.value);
+    }
+  }
+
+  return result;
 }
 export function evaluate_ident(
   ident: Identifier,
@@ -81,7 +89,7 @@ export function evaluate_object_expr(
 }
 export function evalue_call_expr(expr: CallExpr, env: Environment): RuntimeVal {
   const args = expr.arguments.map((arg) => evaluate(arg, env));
-  console.log(expr);
+
   const fn = evaluate(expr.caller, env);
   if (fn.type == "native-fn") {
     const result = (fn as NativeFnValue).call(args, env);

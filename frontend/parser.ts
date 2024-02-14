@@ -19,7 +19,7 @@ export default class Parser {
 
   public produceAST(sourceCode: string): Program {
     this.tokens = tokenize(sourceCode);
-    console.log(this.tokens);
+
     const program: Program = { kind: "Program", body: [] };
 
     while (this.not_eof()) {
@@ -155,7 +155,11 @@ export default class Parser {
   }
   private parse_additive_expr(): Expr {
     let left = this.parse_multiplicative_expr();
-    while (this.at().value == "+" || this.at().value == "-") {
+    while (
+      this.at().value == "+" ||
+      this.at().value == "-" ||
+      this.at().value == "=="
+    ) {
       const operator = this.eat().value;
       const right = this.parse_multiplicative_expr();
       left = {

@@ -24,12 +24,16 @@ export function createGlobalEnv() {
           case "boolean":
             console.log((val as BoolVal).value);
             break;
+
           case "object":
             let obj: { [key: string]: any } = {};
             const aObj = val as ObjectVal;
             aObj.properties.forEach((value, key) => {});
 
-            return obj;
+            break;
+          default:
+            console.log("hello");
+            break;
         }
       });
       return MK_NULL();
