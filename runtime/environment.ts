@@ -20,8 +20,10 @@ export function createGlobalEnv() {
         switch (val.type) {
           case "number":
             console.log((val as NumberVal).value);
+            break;
           case "boolean":
             console.log((val as BoolVal).value);
+            break;
           case "object":
             let obj: { [key: string]: any } = {};
             const aObj = val as ObjectVal;
@@ -84,7 +86,7 @@ export default class Environment {
     }
     return this.parent.resolve(varname);
   }
-  public looupVar(varname: string): RuntimeVal {
+  public lookUpVar(varname: string): RuntimeVal {
     const env = this.resolve(varname);
     return env.variables.get(varname) as RuntimeVal;
   }

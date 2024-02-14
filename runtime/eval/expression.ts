@@ -54,7 +54,7 @@ export function evaluate_ident(
   ident: Identifier,
   env: Environment
 ): RuntimeVal {
-  const val = env.looupVar(ident.symbol);
+  const val = env.lookUpVar(ident.symbol);
   return val;
 }
 export function evaluate_assigment(
@@ -74,13 +74,14 @@ export function evaluate_object_expr(
   const object = { type: "object", properties: new Map() } as ObjectVal;
   for (const { key, value } of obj.properties) {
     const runtimeVal =
-      value == undefined ? env.looupVar(key) : evaluate(value, env);
+      value == undefined ? env.lookUpVar(key) : evaluate(value, env);
     object.properties.set(key, runtimeVal);
   }
   return object;
 }
 export function evalue_call_expr(expr: CallExpr, env: Environment): RuntimeVal {
   const args = expr.arguments.map((arg) => evaluate(arg, env));
+  console.log(expr);
   const fn = evaluate(expr.caller, env);
   if (fn.type == "native-fn") {
     const result = (fn as NativeFnValue).call(args, env);
