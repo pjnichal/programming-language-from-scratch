@@ -1,1 +1,5 @@
-print(10==10)
+const x =10;
+const y =20;
+if(x==y){
+    print(10+10)
+}

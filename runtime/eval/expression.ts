@@ -3,11 +3,13 @@ import {
   BinaryExpr,
   CallExpr,
   Identifier,
+  IfStmt,
   ObjectLiteral,
 } from "../../frontend/ast";
 import Environment from "../environment";
 import { evaluate } from "../interperter";
 import {
+  BoolVal,
   FnValue,
   MK_BOOL,
   MK_NULL,
@@ -86,6 +88,22 @@ export function evaluate_object_expr(
     object.properties.set(key, runtimeVal);
   }
   return object;
+}
+export function evaluate_if_statement(
+  ifdeclare: IfStmt,
+  env: Environment
+): RuntimeVal {
+  const test = evaluate(ifdeclare.condition, env);
+
+  if ((test as BoolVal).value == true) {
+    let result: RuntimeVal = MK_NULL();
+    for (let stmt of ifdeclare.then) {
+      result = evaluate(stmt, env);
+    }
+    return result;
+  } else {
+    return MK_NULL();
+  }
 }
 export function evalue_call_expr(expr: CallExpr, env: Environment): RuntimeVal {
   const args = expr.arguments.map((arg) => evaluate(arg, env));
