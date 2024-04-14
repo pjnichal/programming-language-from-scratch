@@ -1,1 +1,1 @@
-Hello Frunds chai pe lo
+Programming language from scratch
