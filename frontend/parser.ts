@@ -12,6 +12,7 @@ import {
   CallExpr,
   MemberExpr,
   FunctionDeclare,
+  IfStmt,
 } from "./ast";
 import { tokenize, TokenType, Token } from "./lexer";
 export default class Parser {
@@ -38,9 +39,29 @@ export default class Parser {
         return this.parse_var_declare();
       case TokenType.Fn:
         return this.parse_fn_declare();
+      case TokenType.If:
+        return this.parse_if_stmt();
       default:
         return this.parse_expr();
     }
+  }
+  parse_if_stmt(): Stmt {
+    this.eat();
+
+    this.expect(TokenType.OpenParen, "Expects open bracket");
+    const condition = this.parse_stmt();
+    this.expect(TokenType.CloseParen, "Expected closing brace");
+    this.expect(TokenType.OpenBrace, "Expected closing brace");
+    let then: Stmt[] = [];
+    while (
+      this.at().type !== TokenType.EOF &&
+      this.at().type !== TokenType.CloseBrace
+    ) {
+      then.push(this.parse_stmt());
+    }
+    this.expect(TokenType.CloseBrace, "Expect closing brace");
+    // console.log({ condition, then, kind: "IfStmt" } as IfStmt);
+    return { condition, then, kind: "IfStmt" } as IfStmt;
   }
   parse_fn_declare(): Stmt {
     this.eat();
@@ -270,7 +291,7 @@ export default class Parser {
   private expect(type: TokenType, error: any) {
     const prev = this.tokens.shift() as Token;
     if (!prev || prev.type != type) {
-      console.log("Parser err", error, prev, "Expectiong ", type);
+      console.log("Parser err", error, prev, "Expectiong ", TokenType[type]);
       process.exit();
     }
     return prev;

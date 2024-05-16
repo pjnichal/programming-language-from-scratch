@@ -5,6 +5,7 @@ import {
   CallExpr,
   FunctionDeclare,
   Identifier,
+  IfStmt,
   NumericLitral,
   ObjectLiteral,
   Program,
@@ -21,6 +22,7 @@ import {
   evaluate_assigment,
   evaluate_binary_expr,
   evaluate_ident,
+  evaluate_if_statement,
   evaluate_object_expr,
   evalue_call_expr,
 } from "./eval/expression";
@@ -48,6 +50,8 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
       return evaluate_fn_declaration(astNode as FunctionDeclare, env);
     case "Program":
       return evaluate_program(astNode as Program, env);
+    case "IfStmt":
+      return evaluate_if_statement(astNode as IfStmt, env);
     default:
       console.log("THIS AST NODE HAS NOT SETUP", astNode);
       process.exit();

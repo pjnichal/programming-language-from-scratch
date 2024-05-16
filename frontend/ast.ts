@@ -11,7 +11,8 @@ export type NodeType =
   | "UnaryExpr"
   | "MemberExpr"
   | "CallExpr"
-  | "AssignmentExpr";
+  | "AssignmentExpr"
+  | "IfStmt";
 
 export interface Stmt {
   kind: NodeType;
@@ -38,6 +39,12 @@ export interface FunctionDeclare extends Stmt {
   body: Stmt[];
 }
 export interface Expr extends Stmt {}
+export interface IfStmt extends Stmt {
+  kind: "IfStmt";
+  then: Stmt[];
+  else: Stmt[];
+  condition: Expr;
+}
 export interface BinaryExpr extends Expr {
   kind: "BinaryExpr";
   left: Expr;

@@ -22,12 +22,14 @@ export enum TokenType {
   EOF,
   Fn,
   OpenBracket,
+  If,
   CloseBracket,
 }
 const Keywords: Record<string, TokenType> = {
   let: TokenType.Let,
   const: TokenType.Const,
   fn: TokenType.Fn,
+  if: TokenType.If,
 };
 function token(value = "", type: TokenType): Token {
   return { value, type };
