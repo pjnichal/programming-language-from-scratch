@@ -1,5 +1,0 @@
-fn checker(x){
-    x==10
-}
-const ans=checker(11);
-print(ans)

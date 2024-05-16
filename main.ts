@@ -4,7 +4,7 @@ import fs from "fs";
 const readlineSync = require("readline-sync");
 import { evaluate } from "./runtime/interperter";
 import { MK_NULL, MK_NUM, MK_BOOL } from "./runtime/values";
-run("./test.txt");
+run("./test.pravin");
 function run(filename: string) {
   const parser = new Parser();
   const env = createGlobalEnv();
