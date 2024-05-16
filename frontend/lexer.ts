@@ -74,12 +74,12 @@ export function tokenize(sourceCode: string): Token[] {
     ) {
       tokens.push(token(src.shift(), TokenType.BinaryOperator));
     } else if (src[0] == "=") {
-      src.shift();
+      const prev = src.shift();
       if (src[0] == "=") {
         src.shift();
         tokens.push(token("==", TokenType.EqualCompare));
       } else {
-        tokens.push(token(src.shift(), TokenType.Equals));
+        tokens.push(token(prev, TokenType.Equals));
       }
     } else if (src[0] == ";") {
       tokens.push(token(src.shift(), TokenType.Semicolon));

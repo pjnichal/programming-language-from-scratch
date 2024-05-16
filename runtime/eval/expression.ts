@@ -24,6 +24,10 @@ export function evaluate_binary_expr(
 ): RuntimeVal {
   const lhs = evaluate(binop.left, env);
   const rhs = evaluate(binop.right, env);
+  if (binop.operator == "==") {
+    console.log("called this");
+    return evaluate_equal_to_binary_expr(lhs, rhs);
+  }
   if (lhs.type == "number" && rhs.type == "number") {
     return evaluate_numeric_binary_expr(
       lhs as NumberVal,
@@ -31,32 +35,34 @@ export function evaluate_binary_expr(
       binop.operator
     );
   }
+
+  // if (binop.operator == "==") {
+  //   return MK_BOOL(lhs.value == rhs.value);
+  // }
+  // if (lhs.type == "number" && rhs.type == "number") {
   return MK_NULL();
+}
+function evaluate_equal_to_binary_expr(lhs: RuntimeVal, rhs: RuntimeVal) {
+  return MK_BOOL((lhs as NumberVal).value == (rhs as NumberVal).value);
 }
 function evaluate_numeric_binary_expr(
   lhs: NumberVal,
   rhs: NumberVal,
   operator: string
-): RuntimeVal {
-  let result: RuntimeVal = MK_NULL();
-  if (operator == "==") {
-    return MK_BOOL(lhs.value == rhs.value);
+): NumberVal {
+  let result: number = 0;
+  if (operator == "+") {
+    result = lhs.value + rhs.value;
+  } else if (operator == "-") {
+    result = lhs.value - rhs.value;
+  } else if (operator == "*") {
+    result = lhs.value * rhs.value;
+  } else if (operator == "/") {
+    result = lhs.value / rhs.value;
+  } else if (operator == "%") {
+    result = lhs.value % rhs.value;
   }
-  if (lhs.type == "number" && rhs.type == "number") {
-    if (operator == "+") {
-      result = MK_NUM(lhs.value + rhs.value);
-    } else if (operator == "-") {
-      result = MK_NUM(lhs.value - rhs.value);
-    } else if (operator == "*") {
-      result = MK_NUM(lhs.value * rhs.value);
-    } else if (operator == "/") {
-      result = MK_NUM(lhs.value / rhs.value);
-    } else if (operator == "%") {
-      result = MK_NUM(lhs.value % rhs.value);
-    }
-  }
-
-  return result;
+  return { type: "number", value: result } as NumberVal;
 }
 export function evaluate_ident(
   ident: Identifier,

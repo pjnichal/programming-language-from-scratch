@@ -1,1 +1,5 @@
-print(10==10)
+fn checker(x){
+    x==10
+}
+const ans=checker(11);
+print(ans)
