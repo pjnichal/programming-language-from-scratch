@@ -14,7 +14,7 @@ export function createGlobalEnv() {
   env.declareVar("false", MK_BOOL(false), true);
   env.declareVar("null", MK_NULL(), true);
   env.declareVar(
-    "print",
+    "HelloWorld",
     MK_NATIVEFN((args, env) => {
       args.forEach((val) => {
         switch (val.type) {
@@ -28,7 +28,7 @@ export function createGlobalEnv() {
           case "object":
             let obj: { [key: string]: any } = {};
             const aObj = val as ObjectVal;
-            aObj.properties.forEach((value, key) => {});
+            aObj.properties.forEach((value, key) => { });
 
             break;
           default:
